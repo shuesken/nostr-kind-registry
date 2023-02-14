@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { getSortedKindsList } from '$lib/apis/crawlerApi';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	let kinds = data.kinds;
+	let kindsPromise = getSortedKindsList();
 
-	function sort(col: 'seen' | 'kind') {
+	async function sort(col: 'seen' | 'kind') {
+		let res = await kindsPromise
 		switch (col) {
 			case 'kind':
-				kinds = kinds.sort((a, b) => a.kind - b.kind);
+				kindsPromise = Promise.resolve(res.sort((a, b) => a.kind - b.kind));
 				break;
 			case 'seen':
-				kinds = kinds.sort((a, b) => a.seen.valueOf() - b.seen.valueOf());
+				kindsPromise = Promise.resolve(res.sort((a, b) => a.seen.valueOf() - b.seen.valueOf()));
 				break;
 		}
 	}
