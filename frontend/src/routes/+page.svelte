@@ -42,6 +42,7 @@
 			</tr>
 		</thead>
 		<tbody>
+			{#await kindsPromise then kinds}
 			{#each kinds as kind (kind.kind)}
 				<tr
 					on:click={() => goto(`/kinds/${kind.kind}`)}
@@ -59,6 +60,7 @@
 					</td>
 				</tr>
 			{/each}
+			{/await}
 		</tbody>
 	</table>
 </div>
